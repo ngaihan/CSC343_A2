@@ -1,0 +1,6 @@
+-- find the amount of languages spoken in MEX
+select countrycode, count(*) as num_languages
+from countrylanguage
+where countrycode = 'MEX'
+group by countrycode
+order by num_languages
