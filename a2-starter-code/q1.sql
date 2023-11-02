@@ -23,43 +23,57 @@ DROP VIEW IF EXISTS 0to49 CASCADE;
 DROP VIEW IF EXISTS averageMark CASCADE;
 
 -- Define views for your intermediate steps here:
+-- Find the grade by using rubric and grade
+CREATE VIEW rubricGrades AS
+SELECT assignment_id, group_id, grade, out_of, weight
+FROM assignmentgroup JOIN grade USING (group_id)
+					 JOIN rubricitem USING (rubric_id)
+;
+
+-- Update the table so that it has the individual weight of each of the assignment items
+UPDATE rubricGrades
+SET grade = grade / out_of * weight * 100
+;
+
+-- Aggregates each of the weighted rubric items and aggregates them by assignment, giving the total grade
+CREATE VIEW groupGrade AS
+SELECT assignment_id, group_id, sum(grade)
+FROM rubricGrades
+GROUP BY assignment_id, group_id
+;
+
 -- Find the count of each different grade bracket for each assignment
 CREATE VIEW 80to100 AS 
 SELECT assignment_id, count(*) AS num_80_100
-FROM assignment JOIN assignmentgroup USING (assignment_id)
-				JOIN grade USING (group_id)
+FROM groupGrade
 WHERE grade >= 80
 GROUP BY assignment_id
 ;
 
 CREATE VIEW 60to79 AS 
 SELECT assignment_id, count(*) AS num_60_79
-FROM assignment JOIN assignmentgroup USING (assignment_id)
-				JOIN grade USING (group_id)
+FROM groupGrade
 WHERE grade >= 60 AND grade < 80
 GROUP BY assignment_id
 ;
 
 CREATE VIEW 50to59 AS 
 SELECT assignment_id, count(*) AS num_50_59
-FROM assignment JOIN assignmentgroup USING (assignment_id)
-				JOIN grade USING (group_id)
+FROM groupGrade
 WHERE grade >= 50 AND grade < 60
 GROUP BY assignment_id
 ;
 
 CREATE VIEW 0to49 AS num_0_49
 SELECT assignment_id, count(*)
-FROM assignment JOIN assignmentgroup USING (assignment_id)
-				JOIN grade USING (group_id)
+FROM groupGrade
 WHERE grade < 50
 GROUP BY assignment_id
 ;
 
 CREATE VIEW averageMark AS average_mark_percent
 SELECT assignment_id, avg(grade) AS 
-FROM assignment JOIN assignmentgroup USING (assignment_id)
-				JOIN grade USING (group_id)
+FROM groupGrade
 GROUP BY assignment_id
 ;
 
