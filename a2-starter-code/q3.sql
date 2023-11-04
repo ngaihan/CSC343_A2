@@ -107,4 +107,6 @@ WHERE num_solo IS NOT NULL AND num_collaborators IS NOT NULL
 ;
 
 -- Your query that answers the question goes below the "insert into" line:
--- INSERT INTO q3
+INSERT INTO q3 (assignment_id, description, num_solo, average_solo, num_collaborators, average_collaborators, average_students_per_group)
+SELECT assignment_id, description, num_solo, average_solo, num_collaborators, average_collaborators, average_students_per_group FROM solution 
+;
