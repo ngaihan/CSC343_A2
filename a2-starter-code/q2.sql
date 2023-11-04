@@ -15,15 +15,10 @@ CREATE TABLE q2 (
 -- (But give them better names!) The IF EXISTS avoids generating an error
 -- the first time this file is imported.
 DROP VIEW IF EXISTS intermediate_step CASCADE;
-
+DROP VIEW IF EXISTS averageGradePerAssignment CASCADE;
+DROP VIEW IF EXISTS consistentGradeIncrease CASCADE;
 
 -- Define views for your intermediate steps here:
-CREATE VIEW intermediate_step AS ... ;
-
-
--- Your query that answers the question goes below the "insert into" line:
-INSERT INTO q2
-
 CREATE VIEW gradersWithExperience AS 
     SELECT
         g.username AS grader_username,
@@ -86,4 +81,10 @@ GROUP BY
     grader_name
 HAVING
     COUNT(*) = (SELECT COUNT(*) FROM Assignment) -- Ensure that grader graded all assignments
+;
+
+-- Your query that answers the question goes below the "insert into" line:
+INSERT INTO q2(grader_username, grader_name, average_mark_all_assignments, mark_change_first_last)
+SELECT grader_username, COALESCE(grader_name,0), COALESCE(average_mark_all_assignments,0), COALESCE(mark_change_first_last,0)
+FROM solution
 ;
