@@ -44,7 +44,7 @@ SELECT username1 AS student1, username2 AS student2
 FROM numTimesTogether 
 WHERE num_together = (
 	SELECT count(*) FROM groupAssignments 
-) AND student1 > student2
+) AND username1 > username2
 ;
 
 -- Your query that answers the question goes below the "insert into" line:
