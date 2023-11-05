@@ -40,11 +40,11 @@ GROUP BY username1, username2
 ;
 
 CREATE VIEW alwaysTogether AS 
-SELECT username1, username2
+SELECT username1 AS student1, username2 AS student2
 FROM numTimesTogether 
 WHERE num_together = (
 	SELECT count(*) FROM groupAssignments 
-) AND username1 > username2
+) AND student1 > student2
 ;
 
 -- Your query that answers the question goes below the "insert into" line:
