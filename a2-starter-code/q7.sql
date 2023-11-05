@@ -26,7 +26,7 @@ WHERE EXISTS (
 GROUP BY username
 ;
 
--- Grader that marked somemthing from every student
+-- Grader that marked something from every student
 CREATE VIEW notAllStudent AS
 SELECT grader.username
 FROM membership JOIN grader USING (group_id)
