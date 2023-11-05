@@ -14,7 +14,7 @@ CREATE TABLE q2 (
 -- Do this for each of the views that define your intermediate steps.
 -- (But give them better names!) The IF EXISTS avoids generating an error
 -- the first time this file is imported.
-DROP VIEW IF EXISTS intermediate_step CASCADE;
+DROP VIEW IF EXISTS gradersWithExperience CASCADE;
 DROP VIEW IF EXISTS averageGradePerAssignment CASCADE;
 DROP VIEW IF EXISTS consistentGradeIncrease CASCADE;
 
@@ -55,7 +55,7 @@ CREATE VIEW averageGradePerAssignment AS
 CREATE VIEW consistentGradeIncrease AS 
     SELECT
         grader_username,
-        assignment_id,
+        agpa.assignment_id,
         average_grade,
         LAG(average_grade) OVER (PARTITION BY grader_username ORDER BY a.due_date) AS previous_average_grade
     FROM
