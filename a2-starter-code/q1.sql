@@ -76,14 +76,14 @@ GROUP BY assignment_id
 
 CREATE VIEW solution AS
 SELECT assignment_id, average_mark_percent, num_80_100, num_60_79, num_50_59, num_0_49
-FROM averageMark LEFT JOIN grade0to49 USING (assignment_id)
-			     LEFT JOIN grade50to59 USING (assignment_id)
-				 LEFT JOIN grade60to79 USING (assignment_id)
-				 LEFT JOIN grade80to100 USING (assignment_id)
+FROM averageMark FULL JOIN grade0to49 USING (assignment_id)
+			     FULL JOIN grade50to59 USING (assignment_id)
+				 FULL JOIN grade60to79 USING (assignment_id)
+				 FULL JOIN grade80to100 USING (assignment_id)
 ;
 
 -- Your query that answers the question goes below the "insert into" line:
 INSERT INTO q1(assignment_id, average_mark_percent, num_80_100, num_60_79, num_50_59, num_0_49)
-SELECT assignment_id, COALESCE(average_mark_percent,0), COALESCE(num_80_100,0), COALESCE(num_60_79,0), COALESCE(num_50_59,0), COALESCE(num_0_49,0)
-FROM solution
+SELECT assignment.assignment_id, average_mark_percent, COALESCE(num_80_100,0), COALESCE(num_60_79,0), COALESCE(num_50_59,0), COALESCE(num_0_49,0)
+FROM assignment FULL JOIN solution USING (assignment_id)
 ;
