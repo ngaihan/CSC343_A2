@@ -23,7 +23,7 @@ DROP VIEW IF EXISTS groupSubmissions CASCADE;
 DROP VIEW IF EXISTS neverSoloStudents CASCADE;
 DROP VIEW IF EXISTS groupAvg CASCADE;
 DROP VIEW IF EXISTS soloAvg CASCADE;
-
+DROP VIEW IF EXISTS solution CASCADE;
 
 
 -- Define views for your intermediate steps here:
@@ -40,14 +40,14 @@ CREATE VIEW studentsSubmitAll AS
 CREATE VIEW groupAssignments AS
 	SELECT assignment_id 
 	FROM Assignment 
-	Where group_min > 1
+	Where group_max > 1
 ;
 
 -- Find solo assignments
 CREATE VIEW soloAssignments AS
 	SELECT assignment_id
 	FROM Assignment
-	WHERE group_min = 1
+	WHERE group_max = 1
 ;
 
 -- create results for each specific group and group assignments
