@@ -80,6 +80,7 @@ GROUP BY assignment_id
 CREATE VIEW numCollab AS
 SELECT assignment_id, count(*) AS num_collaborators
 FROM collabGroup JOIN assignmentgroup USING (group_id)
+	JOIN membership USING (group_id)
 GROUP BY assignment_id
 ;
 
